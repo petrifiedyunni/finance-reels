@@ -61,6 +61,14 @@
   "caption": "Hawkish vs dovish is just which problem the Fed is more scared of: inflation or growth.",
   "hashtags": ["fed", "finance", "investing", "financialliteracy"],
   "background": "lavender",
+  "intro": {
+    "mode": "full",
+    "enabled": true,
+    "phrase": "diva finance timeee",
+    "character": "creator_doll",
+    "introVoiceLineEnabled": true,
+    "audioMode": "spoken_and_sting"
+  },
   "financeReview": {
     "passed": true,
     "warnings": [],

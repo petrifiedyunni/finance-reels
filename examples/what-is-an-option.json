@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0",
+  "id": "2026-09-15-what-is-an-option",
+  "idea": "what is an option",
+  "title": "What is an option",
+  "series": "options_101",
+  "template": "centered-explainer",
+  "durationTargetSeconds": 12,
+  "hook": "Wait... you're not buying the stock?",
+  "voiceover": "Okay, an option is not the stock. It's a contract that gives you the right to buy or sell it at a set price. You can walk away. That's the whole trick.",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "type": "hook",
+      "headline": "AN OPTION\nIS NOT THE STOCK",
+      "subtext": null,
+      "visual": {
+        "type": "company_card",
+        "state": "default",
+        "label": "STOCK"
+      },
+      "emphasis": ["NOT", "STOCK"],
+      "narrationAnchorStart": "an option is not the stock",
+      "narrationAnchorEnd": "not the stock"
+    },
+    {
+      "id": "scene-2",
+      "type": "concept",
+      "headline": "IT'S A CONTRACT",
+      "subtext": null,
+      "visual": {
+        "type": "option_contract",
+        "state": "default",
+        "label": "OPTION",
+        "value": "$100",
+        "secondaryValue": "$2.40"
+      },
+      "emphasis": ["CONTRACT"],
+      "narrationAnchorStart": "It's a contract",
+      "narrationAnchorEnd": "a contract"
+    },
+    {
+      "id": "scene-3",
+      "type": "concept",
+      "headline": "THE RIGHT TO BUY\nOR SELL AT A SET PRICE",
+      "subtext": null,
+      "visual": {
+        "type": "strike_line",
+        "state": "default",
+        "value": 100
+      },
+      "emphasis": ["RIGHT", "SET PRICE"],
+      "narrationAnchorStart": "right to buy or sell",
+      "narrationAnchorEnd": "set price"
+    },
+    {
+      "id": "scene-4",
+      "type": "payoff",
+      "headline": "YOU CAN\nWALK AWAY",
+      "visual": {
+        "type": "sparkles",
+        "state": "default"
+      },
+      "emphasis": ["WALK AWAY"],
+      "narrationAnchorStart": "You can walk away",
+      "narrationAnchorEnd": "That's the whole trick"
+    }
+  ],
+  "caption": "An option is not the stock. It's a contract: the right to buy or sell at a set price.",
+  "hashtags": ["options", "finance", "investing", "financialliteracy"],
+  "background": "cream",
+  "intro": {
+    "mode": "micro",
+    "enabled": true,
+    "phrase": "diva finance timeee",
+    "character": "creator_doll",
+    "introVoiceLineEnabled": true,
+    "audioMode": "spoken_and_sting"
+  },
+  "financeReview": {
+    "passed": true,
+    "warnings": [],
+    "reviewedAt": "2026-09-15T00:00:00.000Z"
+  }
+}

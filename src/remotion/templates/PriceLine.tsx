@@ -16,9 +16,9 @@ export const PriceLineTemplate: React.FC<{ scene: Scene }> = ({ scene }) => {
   return (
     <SceneContainer>
       <div style={motion}>
-        <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={900} maxFontSize={80} />
+        <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={980} maxFontSize={110} minFontSize={78} />
       </div>
-      <div style={{ height: 48 }} />
+      <div style={{ height: 40 }} />
       <VisualRenderer spec={scene.visual} delay={0} />
       {scene.subtext ? (
         <div

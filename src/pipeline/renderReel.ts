@@ -1,7 +1,7 @@
 import path from "node:path";
 import { bundle } from "@remotion/bundler";
 import { renderMedia, selectComposition } from "@remotion/renderer";
-import { DURATION, VIDEO } from "../config";
+import { VIDEO } from "../config";
 import { ensureDir, fileExists } from "../utils/fs";
 import { resolveFromRoot } from "../utils/fs";
 import type { CompositionProps } from "../content/schema";
@@ -123,6 +123,7 @@ export async function renderReel(input: {
   props: CompositionProps;
   outputPath: string;
   audioPath: string;
+  audioDelaySeconds?: number;
 }): Promise<{ outputPath: string; durationSeconds: number }> {
   const renderer = new RemotionRenderer();
   await renderer.render({
@@ -131,7 +132,7 @@ export async function renderReel(input: {
     props: input.props,
     durationInFrames: input.props.durationInFrames,
   });
-  await muxAudio(input.outputPath, input.audioPath, DURATION.startPaddingSeconds);
+  await muxAudio(input.outputPath, input.audioPath, input.audioDelaySeconds ?? 0);
 
   const { stdout } = await execFileAsync("ffprobe", [
     "-v",

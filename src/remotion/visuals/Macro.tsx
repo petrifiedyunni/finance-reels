@@ -70,10 +70,10 @@ export const Bank: React.FC<VisualProps> = () => (
 );
 
 export const CompanyCard: React.FC<VisualProps> = ({ spec }) => (
-  <VisualCard width={300} height={170} background={colors.white}>
+  <VisualCard width={720} height={280} background={colors.white}>
     <div style={{ textAlign: "center" }}>
-      <div style={{ fontFamily: fonts.sans, fontSize: 16, color: colors.mutedInk, letterSpacing: 2 }}>COMPANY</div>
-      <div style={{ fontFamily: fonts.display, fontSize: 36, color: colors.ink, marginTop: 8 }}>
+      <div style={{ fontFamily: fonts.sans, fontSize: 22, color: colors.mutedInk, letterSpacing: 3 }}>COMPANY</div>
+      <div style={{ fontFamily: fonts.display, fontSize: 64, color: colors.ink, marginTop: 12 }}>
         {spec.label ?? "ACME"}
       </div>
     </div>

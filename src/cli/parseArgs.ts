@@ -1,6 +1,8 @@
 import { isSeriesId, SERIES_IDS, TEMPLATE_IDS, type SeriesId, type TemplateId } from "../content/series";
 import type { VoicePresetId } from "../config";
 import type { CliOptions } from "../pipeline/generateReel";
+import { isIntroMode } from "../content/intro";
+import type { TikTokPublishMode } from "../publish/tiktok/publishReel";
 
 const PRESETS: VoicePresetId[] = ["smart_friend", "soft_explainer", "market_news", "playful"];
 
@@ -14,11 +16,20 @@ function hasFlag(args: string[], name: string): boolean {
   return args.includes(name);
 }
 
+function parsePublish(args: string[]): TikTokPublishMode | undefined {
+  const raw = readArg(args, "--publish");
+  if (!raw) return undefined;
+  if (raw === "inbox" || raw === "tiktok") return "inbox";
+  if (raw === "direct") return "direct";
+  throw new Error(`Unknown --publish "${raw}". Use inbox or direct.`);
+}
+
 export function parseArgs(argv: string[]): CliOptions {
   const args = argv.slice(2);
   const seriesRaw = readArg(args, "--series");
   const templateRaw = readArg(args, "--template");
   const presetRaw = readArg(args, "--preset");
+  const introRaw = readArg(args, "--intro");
 
   if (seriesRaw && !isSeriesId(seriesRaw)) {
     throw new Error(`Unknown series "${seriesRaw}". Use one of: ${SERIES_IDS.join(", ")}`);
@@ -30,12 +41,17 @@ export function parseArgs(argv: string[]): CliOptions {
     throw new Error(`Unknown voice preset "${presetRaw}". Use one of: ${PRESETS.join(", ")}`);
   }
 
+  if (introRaw && !isIntroMode(introRaw)) {
+    throw new Error(`Unknown intro "${introRaw}". Use one of: none, micro, full`);
+  }
+
   return {
     idea: readArg(args, "--idea"),
     series: seriesRaw as SeriesId | undefined,
     template: templateRaw as TemplateId | undefined,
     voice: readArg(args, "--voice"),
     preset: presetRaw as VoicePresetId | undefined,
+    intro: introRaw as CliOptions["intro"],
     spec: readArg(args, "--spec"),
     output: readArg(args, "--output"),
     dryRun: hasFlag(args, "--dry-run"),
@@ -43,6 +59,7 @@ export function parseArgs(argv: string[]): CliOptions {
     open: hasFlag(args, "--open"),
     verbose: hasFlag(args, "--verbose"),
     force: hasFlag(args, "--force"),
+    publish: parsePublish(args),
   };
 }
 
@@ -67,6 +84,7 @@ Options:
   --template    ${TEMPLATE_IDS.join(" | ")}
   --voice       Voice ID (ElevenLabs) or OpenAI voice name
   --preset      ${PRESETS.join(" | ")} (default: smart_friend)
+  --intro       none | micro | full (default: micro)
   --spec        Path to an existing storyboard JSON
   --skip-ai     Use --spec; skip script generation
   --dry-run     Generate/validate spec only
@@ -74,5 +92,11 @@ Options:
   --open        Open the MP4 on macOS
   --force       Ignore caches and regenerate
   --verbose     Extra logs
+  --publish     inbox | direct  (upload to TikTok after render)
+
+TikTok:
+  npm run tiktok -- setup
+  npm run tiktok -- login
+  npm run tiktok -- publish generated/<id>
 `);
 }

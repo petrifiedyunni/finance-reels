@@ -7,8 +7,8 @@ import type { VisualProps } from "./types";
 export const PriceLine: React.FC<VisualProps> = ({ spec }) => {
   const price = Number(spec.value ?? 105);
   return (
-    <VisualCard width={520} height={180} background={colors.white} padding={20}>
-      <SvgFrame width={480} height={140}>
+    <VisualCard width={760} height={260} background={colors.white} padding={24}>
+      <SvgFrame width={712} height={212} viewBox="0 0 480 140">
         <line x1="30" y1="80" x2="450" y2="80" stroke={colors.ink} strokeWidth={strokes.regular} />
         <circle cx="340" cy="80" r="14" fill={colors.rose} stroke={colors.ink} strokeWidth={2} />
         <text x="340" y="48" textAnchor="middle" fill={colors.ink} fontFamily={fonts.sans} fontWeight={fontWeights.sansBold} fontSize="22">
@@ -22,8 +22,8 @@ export const PriceLine: React.FC<VisualProps> = ({ spec }) => {
 export const StrikeLine: React.FC<VisualProps> = ({ spec }) => {
   const strike = Number(spec.value ?? 100);
   return (
-    <VisualCard width={520} height={140} background={colors.backgroundCream} padding={16}>
-      <SvgFrame width={480} height={110}>
+    <VisualCard width={760} height={200} background={colors.backgroundCream} padding={18}>
+      <SvgFrame width={724} height={164} viewBox="0 0 480 110">
         <line x1="30" y1="58" x2="450" y2="58" stroke={colors.mutedInk} strokeWidth={3} strokeDasharray="10 10" />
         <text x="450" y="42" textAnchor="end" fill={colors.mutedInk} fontFamily={fonts.sans} fontSize="18">
           strike ${strike}
@@ -40,8 +40,8 @@ export const PriceVsStrike: React.FC<VisualProps> = ({ spec, progress }) => {
   const cx = 70 + progress * 250;
 
   return (
-    <VisualCard width={560} height={240} background={colors.white} padding={18}>
-      <SvgFrame width={520} height={200}>
+    <VisualCard width={820} height={350} background={colors.white} padding={22}>
+      <SvgFrame width={776} height={306} viewBox="0 0 520 200">
         <text x="26" y="36" fill={colors.mutedInk} fontFamily={fonts.sans} fontSize="16">
           PRICE
         </text>

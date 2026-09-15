@@ -24,4 +24,4 @@ export const captionBand = {
   maxY: VIDEO.height - safeZones.bottom - 8,
 } as const;
 
-export const seriesPillY = safeZones.top + 8;
+export const seriesPillY = safeZones.top + 36;

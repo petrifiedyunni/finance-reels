@@ -7,9 +7,10 @@ AI writes the explanation, hook, and storyboard. Code owns typography, color, la
 ```
 IDEA → script → storyboard JSON → voiceover → word timestamps
     → animated 1080×1920 video → captions → MP4 + social metadata
+    → TikTok inbox (review in the app) → post
 ```
 
-V1 stops before publishing.
+After production, `npm run tiktok -- publish generated/<id>` sends the MP4 to a connected brand account as a TikTok draft.
 
 ## Quickstart
 
@@ -60,6 +61,11 @@ Output:
 | `OPENAI_TRANSCRIBE_MODEL` | `whisper-1` | Word-level timestamps |
 | `MOCK_AI` | `false` | Force local/offline generation even if keys exist |
 | `FALLBACK_TIMESTAMPS` | `false` | Labeled proportional timing if transcription has no words |
+| `TIKTOK_CLIENT_KEY` | — | Desktop Login Kit client key |
+| `TIKTOK_CLIENT_SECRET` | — | Desktop Login Kit client secret |
+| `TIKTOK_REDIRECT_URI` | `http://127.0.0.1:*/callback/` | Must match the app redirect URI |
+| `TIKTOK_PRIVACY_LEVEL` | `SELF_ONLY` | Direct-post privacy. Unaudited apps stay private |
+| `TIKTOK_IS_AIGC` | `true` | Label generated reels as AI-generated on direct posts |
 
 Never put API keys in client/Remotion code. The CLI reads `.env` on the server side only.
 
@@ -84,7 +90,54 @@ npm run reel -- --spec examples/percent-loss.json --skip-ai
 
 `--skip-ai` never calls the script-generation model. It still generates voice and timestamps unless there is no TTS/transcription key (then it uses local `say` + labeled timing).
 
-Useful flags: `--template cause-effect`, `--voice <id>`, `--preset smart_friend`, `--output custom/path`, `--open`, `--force`, `--verbose`.
+Useful flags: `--template cause-effect`, `--voice <id>`, `--preset smart_friend`, `--intro micro`, `--output custom/path`, `--open`, `--force`, `--verbose`.
+
+## Brand bumper
+
+Every reel can open with a signature doll intro: **Finance for Divas**.
+
+| Mode | Length | What you see |
+| --- | --- | --- |
+| `none` | 0 | No bumper |
+| `micro` (default) | ~0.9s | Head cutout, 3D wordmark, bling sting. Most reels. |
+| `full` | ~2.4s | Same bumper, held a beat longer, then into the hook |
+
+A sparkle/bling sting lives at `public/assets/audio/intro-sting.mp3` and plays with the bumper. The saved intro render is `generated/brand/intro-micro.mp4`.
+
+```bash
+npm run reel -- --idea "why is selling a put bullish" --intro micro
+npm run reel -- --spec examples/hawkish-dovish.json --skip-ai --intro full
+```
+
+Drop an original sparkle/chime at `public/assets/audio/intro-sting.mp3` if you want to replace the bling. The bumper still plays if that file is missing.
+
+In Remotion Studio, preview `BrandBumperMicro` and `BrandBumperFull`.
+
+## Publish to TikTok
+
+Create a **new brand TikTok account** in the TikTok app (not your personal one). This CLI cannot invent that account. Then connect it with TikTok's official Content Posting API.
+
+```bash
+npm run tiktok -- setup    # checklist
+npm run tiktok -- login    # private window, sign into the BRAND account
+npm run tiktok -- publish generated/2026-09-15-what-is-an-option
+```
+
+Default upload is **inbox / draft**. Open TikTok, tap the notification, paste `tiktok-caption.txt`, post.
+
+Direct post (stays private until TikTok audits your developer app):
+
+```bash
+npm run tiktok -- publish generated/2026-09-15-what-is-an-option --direct
+```
+
+Or render and upload in one command:
+
+```bash
+npm run reel -- --spec examples/what-is-an-option.json --skip-ai --publish inbox
+```
+
+Register the developer app as **Desktop**, redirect URI `http://127.0.0.1:*/callback/`, scopes `user.info.basic`, `video.upload`, `video.publish`. Tokens live in `.tiktok/token.json` (gitignored).
 
 ## Open Remotion Studio
 
@@ -103,9 +156,11 @@ src/
   brand/        colors, type, safe zones (single source of truth)
   content/      Zod schema, series, visual vocabulary
   timing/       scene timeline + caption grouping
-  remotion/     compositions, templates, visuals, motion
+  remotion/     compositions, templates, visuals, motion, brand bumper
+  branding/     creator doll + intro text (under remotion/branding)
   pipeline/     generate → render, caching
-  cli/          npm run reel, npm run voice-test
+  cli/          npm run reel, npm run voice-test, npm run tiktok
+  publish/      TikTok OAuth + inbox/direct upload
   interfaces/   future Publisher + Analytics placeholders
 ```
 
@@ -116,7 +171,7 @@ Pipeline stages are separate artifacts under `generated/<id>/`:
 - `voiceover.mp3`
 - `captions.json`
 - `render.mp4`
-- `social.json`
+- `tiktok-caption.txt`
 - `generation-log.json`
 
 If render fails, earlier files are kept so you can rerun without paying for AI/TTS again.
@@ -214,6 +269,7 @@ The renderer muxes `voiceover.mp3` if Remotion did not embed it. Check `ffprobe 
 
 ```bash
 npm run reel
+npm run tiktok
 npm run voice-test
 npm run studio
 npm test
@@ -223,10 +279,8 @@ npm run lint
 
 ## Future roadmap
 
-- Publisher adapters for TikTok, Instagram, YouTube Shorts
+- Instagram Reels + YouTube Shorts publishers
 - Analytics ingest (views, completion, rewatches, posting time)
 - Content queue UI on top of `content/ideas.json`
 - Sourced live-market data providers (V1 stays conceptual when numbers cannot be verified)
 - Tone presets and A/B hooks from performance data
-
-Interfaces for `Publisher` and `AnalyticsProvider` already exist. They are intentionally unimplemented in V1.

@@ -15,6 +15,7 @@ import type { GenerationRequest, ScriptGenerator, UsageTotals } from "../interfa
 import { parseWithGrok } from "./parseStructured";
 import { LocalScriptGenerator } from "./localStoryboard";
 import { creatorSystemPrompt, creatorUserPrompt } from "./prompts/creatorPrompt";
+import { DEFAULT_INTRO } from "../content/intro";
 
 function toVisual(llm: LlmStoryboard["scenes"][number]["visual"]): VisualSpec {
   return {
@@ -72,6 +73,7 @@ export function llmToStoryboard(
     caption: llm.caption,
     hashtags: llm.hashtags.map((h) => h.replace(/^#/, "")),
     background: llm.background ?? SERIES[series].background,
+    intro: DEFAULT_INTRO,
   };
 
   return StoryboardSchema.parse(draft);

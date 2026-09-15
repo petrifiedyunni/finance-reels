@@ -45,9 +45,15 @@ export const VisualCard: React.FC<{
 export const SvgFrame: React.FC<{
   width: number;
   height: number;
+  viewBox?: string;
   children: React.ReactNode;
-}> = ({ width, height, children }) => (
-  <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} fill="none">
+}> = ({ width, height, viewBox, children }) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox={viewBox ?? `0 0 ${width} ${height}`}
+    fill="none"
+  >
     {children}
   </svg>
 );

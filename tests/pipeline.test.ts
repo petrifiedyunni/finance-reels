@@ -98,11 +98,14 @@ describe("CLI args", () => {
       "--verbose",
       "--preset",
       "smart_friend",
+      "--intro",
+      "micro",
     ]);
     expect(options.idea).toBe("what is theta");
     expect(options.series).toBe("options_101");
     expect(options.dryRun).toBe(true);
     expect(options.verbose).toBe(true);
     expect(options.preset).toBe("smart_friend");
+    expect(options.intro).toBe("micro");
   });
 });

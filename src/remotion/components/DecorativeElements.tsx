@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { colors } from "../../brand/theme";
-import { fonts, fontWeights, letterSpacing } from "../../brand/typography";
+import { fonts, fontWeights, letterSpacing, typeScale } from "../../brand/typography";
 import { seriesPillY } from "../../brand/safeZones";
 import { getSeries, type SeriesId } from "../../content/series";
 import { enterSpring, floatY } from "../animations";
@@ -29,13 +29,13 @@ export const SeriesPill: React.FC<{ series: SeriesId }> = ({ series }) => {
         style={{
           fontFamily: fonts.sans,
           fontWeight: fontWeights.sansBold,
-          fontSize: 20,
+          fontSize: typeScale.pill,
           letterSpacing: letterSpacing.pill,
           color: colors.ink,
           background: colors.white,
           borderRadius: 999,
-          padding: "12px 22px",
-          boxShadow: "0 10px 24px rgba(40,37,43,0.06)",
+          padding: "16px 34px",
+          boxShadow: "0 12px 28px rgba(40,37,43,0.08)",
         }}
       >
         {config.label} {config.decorative}
@@ -50,14 +50,14 @@ export const DecorativeElements: React.FC<{
   const frame = useCurrentFrame();
   const sparkles = variant === "payoff"
     ? [
-        { x: 120, y: 420, s: 16 },
-        { x: 900, y: 520, s: 12 },
-        { x: 180, y: 1100, s: 10 },
-        { x: 860, y: 980, s: 14 },
+        { x: 58, y: 340, s: 13 },
+        { x: 980, y: 620, s: 11 },
+        { x: 70, y: 1080, s: 12 },
+        { x: 940, y: 1020, s: 14 },
       ]
     : [
-        { x: 86, y: 390, s: 11 },
-        { x: 940, y: 480, s: 9 },
+        { x: 52, y: 330, s: 12 },
+        { x: 990, y: 640, s: 11 },
       ];
 
   return (

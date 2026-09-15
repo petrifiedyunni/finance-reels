@@ -21,8 +21,8 @@ export const CauseEffect: React.FC<{ scene: Scene }> = ({ scene }) => {
 
   return (
     <SceneContainer>
-      <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={900} maxFontSize={74} />
-      <div style={{ height: 48 }} />
+      <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={960} maxFontSize={100} />
+      <div style={{ height: 44 }} />
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         {nodes.map((node, i) => {
           const p = enterSpring(frame, fps, stagger(i, 6));

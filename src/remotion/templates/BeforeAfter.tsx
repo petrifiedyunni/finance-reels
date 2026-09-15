@@ -18,8 +18,8 @@ export const BeforeAfter: React.FC<{ scene: Scene }> = ({ scene }) => {
 
   return (
     <SceneContainer>
-      <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={860} maxFontSize={78} />
-      <div style={{ height: 40 }} />
+      <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={960} maxFontSize={104} />
+      <div style={{ height: 44 }} />
       <div style={{ display: "flex", gap: 22, alignItems: "stretch" }}>
         <div
           style={{

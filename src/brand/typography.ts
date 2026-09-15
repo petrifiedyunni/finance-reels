@@ -1,14 +1,15 @@
 export const fonts = {
   display: "Fraunces",
   sans: "Outfit",
+  script: "Great Vibes",
 } as const;
 
 export const typeScale = {
-  hook: { min: 70, max: 100 },
+  hook: { min: 78, max: 112 },
   primary: { min: 55, max: 80 },
   secondary: { min: 38, max: 52 },
   captions: { min: 48, max: 64 },
-  pill: 22,
+  pill: 30,
   label: 26,
   captionWord: 52,
 } as const;
@@ -25,7 +26,7 @@ export const letterSpacing = {
   hook: -1.6,
   headline: -1.1,
   caption: -0.4,
-  pill: 1.4,
+  pill: 1.8,
 } as const;
 
 export const lineHeight = {

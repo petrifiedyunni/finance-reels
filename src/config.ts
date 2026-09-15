@@ -17,6 +17,21 @@ export const DURATION = {
   minSceneSeconds: 1.35,
 } as const;
 
+export const INTRO = {
+  phrase: "diva finance timeee",
+  phraseLead: "diva finance",
+  phraseTail: "timeee",
+  kicker: "finance for divas",
+  character: "creator_doll",
+  defaultMode: "micro",
+  microSeconds: 0.9,
+  fullSeconds: 2.4,
+  overlapSeconds: 0.18,
+} as const;
+
+export type IntroMode = "none" | "micro" | "full";
+export type IntroAudioMode = "spoken" | "sting" | "spoken_and_sting";
+
 export const WORD_COUNT = {
   min: 24,
   max: 48,

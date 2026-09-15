@@ -1,4 +1,5 @@
 import { SCHEMA_VERSION } from "../config";
+import { DEFAULT_INTRO } from "../content/intro";
 import { StoryboardSchema, type Scene, type Storyboard } from "../content/schema";
 import { SERIES, type SeriesId, type TemplateId } from "../content/series";
 import type { GenerationRequest, ScriptGenerator, UsageTotals } from "../interfaces";
@@ -28,7 +29,7 @@ function finish(
   idea: string,
   series: SeriesId,
   template: TemplateId,
-  draft: Omit<Storyboard, "schemaVersion" | "id" | "idea" | "series" | "template" | "durationTargetSeconds" | "background" | "financeReview"> & {
+  draft: Omit<Storyboard, "schemaVersion" | "id" | "idea" | "series" | "template" | "durationTargetSeconds" | "background" | "financeReview" | "intro"> & {
     template?: TemplateId;
     background?: Storyboard["background"];
   },
@@ -48,6 +49,7 @@ function finish(
     scenes: draft.scenes,
     caption: draft.caption,
     hashtags: draft.hashtags,
+    intro: DEFAULT_INTRO,
   });
 }
 
@@ -91,6 +93,108 @@ function knownRecipe(idea: string, series: SeriesId, template: TemplateId): Stor
         "Okay, selling a put sounds bearish. But here's the weird part — you're actually hoping the stock stays above your strike. If it does? It expires worthless. You keep the premium.",
       scenes,
       caption: "Selling a put sounds bearish because... put. The trade itself is usually bullish.",
+      hashtags: ["options", "finance", "investing", "financialliteracy"],
+      template: "price-line",
+      background: "cream",
+    });
+  }
+
+  if (/what is an option|what('?| i)s an option/.test(text)) {
+    return finish(idea, "options_101", "centered-explainer", {
+      title: "What is an option",
+      hook: "Wait... you're not buying the stock?",
+      voiceover:
+        "Okay, an option is not the stock. It's a contract that gives you the right to buy or sell it at a set price. You can walk away. That's the whole trick.",
+      scenes: [
+        {
+          id: "scene-1",
+          type: "hook",
+          headline: "AN OPTION\nIS NOT THE STOCK",
+          visual: { type: "company_card", state: "default", label: "STOCK" },
+          emphasis: ["NOT", "STOCK"],
+          narrationAnchorStart: "an option is not the stock",
+          narrationAnchorEnd: "not the stock",
+        },
+        {
+          id: "scene-2",
+          type: "concept",
+          headline: "IT'S A CONTRACT",
+          visual: { type: "option_contract", state: "default", label: "OPTION", value: "$100", secondaryValue: "$2.40" },
+          emphasis: ["CONTRACT"],
+          narrationAnchorStart: "It's a contract",
+          narrationAnchorEnd: "a contract",
+        },
+        {
+          id: "scene-3",
+          type: "concept",
+          headline: "THE RIGHT TO BUY\nOR SELL AT A SET PRICE",
+          visual: { type: "strike_line", state: "default", value: 100 },
+          emphasis: ["RIGHT", "SET PRICE"],
+          narrationAnchorStart: "right to buy or sell",
+          narrationAnchorEnd: "set price",
+        },
+        {
+          id: "scene-4",
+          type: "payoff",
+          headline: "YOU CAN\nWALK AWAY",
+          visual: { type: "sparkles", state: "default" },
+          emphasis: ["WALK AWAY"],
+          narrationAnchorStart: "You can walk away",
+          narrationAnchorEnd: "That's the whole trick",
+        },
+      ],
+      caption: "An option is not the stock. It's a contract: the right to buy or sell at a set price.",
+      hashtags: ["options", "finance", "investing", "financialliteracy"],
+      template: "centered-explainer",
+      background: "cream",
+    });
+  }
+
+  if (/call vs put|call versus put|calls? vs puts?/.test(text)) {
+    return finish(idea, "options_101", "price-line", {
+      title: "Call vs put",
+      hook: "Call and put are not the same bet.",
+      voiceover:
+        "Okay, a call is the right to buy. You want the stock up. A put is the right to sell. You want it down. Same contract family, opposite bet.",
+      scenes: [
+        {
+          id: "scene-1",
+          type: "hook",
+          headline: "CALL VS PUT",
+          visual: { type: "option_contract", state: "question", label: "OPTION", value: "$100", secondaryValue: "$2.40" },
+          emphasis: ["CALL", "PUT"],
+          narrationAnchorStart: "a call is the right to buy",
+          narrationAnchorEnd: "right to buy",
+        },
+        {
+          id: "scene-2",
+          type: "concept",
+          headline: "CALL = RIGHT TO BUY\nYOU WANT IT UP",
+          visual: { type: "option_contract", state: "default", label: "CALL", value: "$100", secondaryValue: "$2.40" },
+          emphasis: ["CALL", "BUY", "UP"],
+          narrationAnchorStart: "You want the stock up",
+          narrationAnchorEnd: "stock up",
+        },
+        {
+          id: "scene-3",
+          type: "concept",
+          headline: "PUT = RIGHT TO SELL\nYOU WANT IT DOWN",
+          visual: { type: "option_contract", state: "default", label: "PUT", value: "$100", secondaryValue: "$2.40" },
+          emphasis: ["PUT", "SELL", "DOWN"],
+          narrationAnchorStart: "A put is the right to sell",
+          narrationAnchorEnd: "You want it down",
+        },
+        {
+          id: "scene-4",
+          type: "payoff",
+          headline: "SAME FAMILY.\nOPPOSITE BET.",
+          visual: { type: "percent_change", state: "up", value: "CALL ↑", direction: "up" },
+          emphasis: ["OPPOSITE"],
+          narrationAnchorStart: "opposite bet",
+          narrationAnchorEnd: "opposite bet",
+        },
+      ],
+      caption: "A call is the right to buy. A put is the right to sell. Same family, opposite bet.",
       hashtags: ["options", "finance", "investing", "financialliteracy"],
       template: "price-line",
       background: "cream",

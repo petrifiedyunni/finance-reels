@@ -2,6 +2,7 @@ import { z } from "zod";
 import { VISUAL_TYPES } from "./visuals";
 import { SERIES_IDS, TEMPLATE_IDS } from "./series";
 import { SCHEMA_VERSION } from "../config";
+import { DEFAULT_INTRO, IntroSchema } from "./intro";
 
 export const SeriesSchema = z.enum(SERIES_IDS);
 export const TemplateSchema = z.enum(TEMPLATE_IDS);
@@ -87,6 +88,7 @@ export const StoryboardSchema = z
     hashtags: z.array(z.string().min(2).max(32)).min(3).max(6),
     financeReview: FinanceReviewSchema.optional(),
     background: z.enum(["cream", "blush", "butter", "blue", "lavender"]).optional(),
+    intro: IntroSchema.optional().default(DEFAULT_INTRO),
   })
   .strict();
 
@@ -197,8 +199,18 @@ export const SocialMetadataSchema = z
     hashtags: z.array(z.string()),
     series: SeriesSchema,
     createdAt: z.string(),
-    publishStatus: z.literal("draft"),
+    publishStatus: z.enum(["draft", "inbox", "posted", "failed"]),
     disclaimer: z.string().optional(),
+    tiktok: z
+      .object({
+        mode: z.enum(["inbox", "direct"]),
+        publishId: z.string().optional(),
+        status: z.string().optional(),
+        uploadedAt: z.string().optional(),
+        openId: z.string().optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 

@@ -58,6 +58,14 @@
   "caption": "A 10% loss is not undone by a 10% gain. Math is rude like that.",
   "hashtags": ["investing", "finance", "moneymath", "financialliteracy"],
   "background": "cream",
+  "intro": {
+    "mode": "micro",
+    "enabled": true,
+    "phrase": "diva finance timeee",
+    "character": "creator_doll",
+    "introVoiceLineEnabled": true,
+    "audioMode": "spoken_and_sting"
+  },
   "financeReview": {
     "passed": true,
     "warnings": [],

@@ -54,6 +54,14 @@
   "caption": "IV is not a villain. It's the market charging more when it expects bigger moves.",
   "hashtags": ["options", "finance", "investing", "financialliteracy"],
   "background": "butter",
+  "intro": {
+    "mode": "micro",
+    "enabled": true,
+    "phrase": "diva finance timeee",
+    "character": "creator_doll",
+    "introVoiceLineEnabled": true,
+    "audioMode": "spoken_and_sting"
+  },
   "financeReview": {
     "passed": true,
     "warnings": [],

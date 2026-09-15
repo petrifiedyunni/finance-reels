@@ -1,11 +1,24 @@
-export type PublishStatus = "draft" | "scheduled" | "posted" | "failed";
+import path from "node:path";
+import type { Publisher } from "./index";
 
-export interface PublisherPlaceholder {
-  platforms: Array<"tiktok" | "instagram" | "youtube_shorts" | "scheduler">;
-  note: "V1 does not publish. Implement Publisher in a later version.";
+export type PublishStatus = "draft" | "inbox" | "posted" | "failed";
+
+export const tiktokPublisherNote =
+  "TikTok inbox upload is live. Connect a brand account with npm run tiktok -- login, then npm run tiktok -- publish generated/<id>.";
+
+export class TikTokPublisher implements Publisher {
+  readonly name = "tiktok";
+
+  async publish(input: {
+    videoPath: string;
+    caption: string;
+    hashtags: string[];
+  }): Promise<{ platformId: string }> {
+    const { publishReelToTikTok } = await import("../publish/tiktok/publishReel");
+    const result = await publishReelToTikTok({
+      outputDir: path.dirname(input.videoPath),
+      mode: "inbox",
+    });
+    return { platformId: result.publishId };
+  }
 }
-
-export const futurePublishers: PublisherPlaceholder = {
-  platforms: ["tiktok", "instagram", "youtube_shorts", "scheduler"],
-  note: "V1 does not publish. Implement Publisher in a later version.",
-};

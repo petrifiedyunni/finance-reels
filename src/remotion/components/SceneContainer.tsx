@@ -9,10 +9,10 @@ export const SceneContainer: React.FC<{
   return (
     <AbsoluteFill
       style={{
-        paddingTop: contentFrame.y,
+        paddingTop: 280,
         paddingLeft: contentFrame.x,
         paddingRight: 56,
-        paddingBottom: 420,
+        paddingBottom: 400,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

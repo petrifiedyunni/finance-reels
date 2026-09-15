@@ -18,9 +18,9 @@ export const CenteredExplainer: React.FC<{ scene: Scene }> = ({ scene }) => {
   return (
     <SceneContainer>
       <div style={headline}>
-        <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={860} />
+        <FitHeadline text={scene.headline} emphasis={scene.emphasis} width={960} />
       </div>
-      <div style={{ height: 36 }} />
+      <div style={{ height: 40 }} />
       <VisualRenderer spec={scene.visual} delay={2} />
       {scene.subtext ? (
         <div

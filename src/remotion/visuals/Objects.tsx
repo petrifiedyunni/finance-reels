@@ -8,12 +8,12 @@ export const PercentChange: React.FC<VisualProps> = ({ spec, progress }) => {
   const down = spec.state === "down" || spec.direction === "down";
   const value = spec.value ?? (down ? "-10%" : "+10%");
   return (
-    <VisualCard width={280} height={180} background={down ? colors.backgroundBlush : colors.backgroundCream}>
+    <VisualCard width={480} height={280} background={down ? colors.backgroundBlush : colors.backgroundCream}>
       <div
         style={{
           fontFamily: fonts.display,
           fontWeight: 700,
-          fontSize: 64,
+          fontSize: 88,
           color: down ? colors.red : colors.green,
           transform: `scale(${0.9 + progress * 0.1})`,
         }}

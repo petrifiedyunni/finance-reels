@@ -53,8 +53,8 @@ export const Arrow: React.FC<VisualProps> = ({ spec, progress }) => {
 };
 
 export const Sparkles: React.FC<VisualProps> = ({ progress }) => (
-  <VisualCard width={200} height={140} background="transparent" style={{ boxShadow: "none" }}>
-    <div style={{ fontSize: 40 + progress * 8, color: colors.gold, letterSpacing: 12 }}>✦ ✦ ✦</div>
+  <VisualCard width={420} height={220} background="transparent" style={{ boxShadow: "none" }}>
+    <div style={{ fontSize: 64 + progress * 10, color: colors.gold, letterSpacing: 18 }}>✦ ✦ ✦</div>
   </VisualCard>
 );
 

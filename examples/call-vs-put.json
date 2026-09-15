@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0",
+  "id": "2026-09-15-call-vs-put",
+  "idea": "call vs put",
+  "title": "Call vs put",
+  "series": "options_101",
+  "template": "price-line",
+  "durationTargetSeconds": 12,
+  "hook": "Call and put are not the same bet.",
+  "voiceover": "Okay, a call is the right to buy. You want the stock up. A put is the right to sell. You want it down. Same contract family, opposite bet.",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "type": "hook",
+      "headline": "CALL VS PUT",
+      "subtext": null,
+      "visual": {
+        "type": "option_contract",
+        "state": "question",
+        "label": "OPTION",
+        "value": "$100",
+        "secondaryValue": "$2.40"
+      },
+      "emphasis": ["CALL", "PUT"],
+      "narrationAnchorStart": "a call is the right to buy",
+      "narrationAnchorEnd": "right to buy"
+    },
+    {
+      "id": "scene-2",
+      "type": "concept",
+      "headline": "CALL = RIGHT TO BUY\nYOU WANT IT UP",
+      "subtext": null,
+      "visual": {
+        "type": "option_contract",
+        "state": "default",
+        "label": "CALL",
+        "value": "$100",
+        "secondaryValue": "$2.40"
+      },
+      "emphasis": ["CALL", "BUY", "UP"],
+      "narrationAnchorStart": "You want the stock up",
+      "narrationAnchorEnd": "stock up"
+    },
+    {
+      "id": "scene-3",
+      "type": "concept",
+      "headline": "PUT = RIGHT TO SELL\nYOU WANT IT DOWN",
+      "subtext": null,
+      "visual": {
+        "type": "option_contract",
+        "state": "default",
+        "label": "PUT",
+        "value": "$100",
+        "secondaryValue": "$2.40"
+      },
+      "emphasis": ["PUT", "SELL", "DOWN"],
+      "narrationAnchorStart": "A put is the right to sell",
+      "narrationAnchorEnd": "You want it down"
+    },
+    {
+      "id": "scene-4",
+      "type": "payoff",
+      "headline": "SAME FAMILY.\nOPPOSITE BET.",
+      "visual": {
+        "type": "percent_change",
+        "state": "up",
+        "value": "CALL ↑",
+        "direction": "up"
+      },
+      "emphasis": ["OPPOSITE"],
+      "narrationAnchorStart": "opposite bet",
+      "narrationAnchorEnd": "opposite bet"
+    }
+  ],
+  "caption": "A call is the right to buy. A put is the right to sell. Same family, opposite bet.",
+  "hashtags": ["options", "finance", "investing", "financialliteracy"],
+  "background": "cream",
+  "intro": {
+    "mode": "micro",
+    "enabled": true,
+    "phrase": "diva finance timeee",
+    "character": "creator_doll",
+    "introVoiceLineEnabled": true,
+    "audioMode": "spoken_and_sting"
+  },
+  "financeReview": {
+    "passed": true,
+    "warnings": [],
+    "reviewedAt": "2026-09-15T00:00:00.000Z"
+  }
+}

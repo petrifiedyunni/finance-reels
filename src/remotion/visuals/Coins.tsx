@@ -8,8 +8,8 @@ export const Coins: React.FC<VisualProps> = ({ spec, progress }) => {
   const collect = spec.state === "collect";
   const lift = collect ? (1 - progress) * 30 : 0;
   return (
-    <VisualCard width={340} height={220} background={colors.backgroundButter}>
-      <SvgFrame width={280} height={170}>
+    <VisualCard width={520} height={330} background={colors.backgroundButter} padding={28}>
+      <SvgFrame width={464} height={274} viewBox="0 0 280 170">
         {[0, 1, 2].map((i) => {
           const y = 88 - i * 18 - (i === 2 ? lift : 0);
           return (

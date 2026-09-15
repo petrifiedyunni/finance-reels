@@ -116,13 +116,12 @@ export async function synthesizeWithMacSay(input: {
   const spoken = shapeSpokenText(input.text);
 
   try {
-    const usedVoice = await synthesizeNeural({
+    await synthesizeNeural({
       text: spoken,
       outputPath: input.outputPath,
       voice,
       speed,
     });
-    void usedVoice;
     return {
       filePath: input.outputPath,
       durationSeconds: await getAudioDuration(input.outputPath),

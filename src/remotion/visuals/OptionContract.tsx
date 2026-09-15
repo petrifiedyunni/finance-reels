@@ -9,12 +9,13 @@ export const OptionContract: React.FC<VisualProps> = ({ spec, progress }) => {
   const question = spec.state === "question";
   const opacity = fade ? 1 - progress * 0.55 : 1;
   const scale = fade ? 1 - progress * 0.08 : 0.92 + progress * 0.08;
-  const kind = spec.label?.toUpperCase().includes("CALL") ? "CALL" : "PUT";
+  const label = spec.label?.toUpperCase() ?? "";
+  const kind = label.includes("CALL") ? "CALL" : label.includes("PUT") ? "PUT" : "OPTION";
 
   return (
     <div style={{ opacity, transform: `scale(${scale})` }}>
-      <VisualCard width={390} height={240} background={colors.white}>
-        <SvgFrame width={342} height={192}>
+      <VisualCard width={800} height={430} background={colors.white} padding={30}>
+        <SvgFrame width={740} height={370} viewBox="0 0 342 192">
           <rect x="8" y="10" width="326" height="172" rx="22" fill={colors.backgroundCream} stroke={colors.ink} strokeWidth={strokes.regular} />
           <rect x="8" y="10" width="326" height="48" rx="22" fill={question ? colors.softPink : colors.backgroundBlush} />
           <rect x="8" y="34" width="326" height="24" fill={question ? colors.softPink : colors.backgroundBlush} />

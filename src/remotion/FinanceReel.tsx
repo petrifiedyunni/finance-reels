@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   Audio,
   Sequence,
+  useCurrentFrame,
   useVideoConfig,
 } from "remotion";
 import type { CompositionProps, Scene } from "../content/schema";
@@ -10,8 +11,10 @@ import type { TemplateId } from "../content/series";
 import { backgroundByKey, colors } from "../brand/theme";
 import { SERIES } from "../content/series";
 import { DURATION } from "../config";
+import { introDurationSeconds, resolveIntro } from "../content/intro";
 import { DecorativeElements, SeriesPill } from "./components/DecorativeElements";
 import { KineticCaptions } from "./components/KineticCaptions";
+import { BrandBumper } from "./branding/BrandBumper";
 import { CenteredExplainer } from "./templates/CenteredExplainer";
 import { BeforeAfter } from "./templates/BeforeAfter";
 import { CauseEffect } from "./templates/CauseEffect";
@@ -31,11 +34,16 @@ export const FinanceReel: React.FC<CompositionProps> = ({
   audioSrc,
 }) => {
   const { fps } = useVideoConfig();
+  const frame = useCurrentFrame();
   const series = SERIES[storyboard.series];
   const backgroundKey = storyboard.background ?? series.background;
   const background = backgroundByKey[backgroundKey];
   const Template = TEMPLATES[storyboard.template] ?? CenteredExplainer;
   const scenesById = new Map(storyboard.scenes.map((s) => [s.id, s]));
+  const intro = resolveIntro(storyboard.intro);
+  const introSeconds = introDurationSeconds(intro);
+  const introFrames = Math.max(0, Math.round(introSeconds * fps));
+  const showChrome = introFrames === 0 || frame >= introFrames - 6;
 
   return (
     <AbsoluteFill style={{ background, overflow: "hidden" }}>
@@ -44,8 +52,10 @@ export const FinanceReel: React.FC<CompositionProps> = ({
           backgroundImage: `radial-gradient(1200px 700px at 50% 18%, ${colors.white}55, transparent 70%)`,
         }}
       />
-      <SeriesPill series={storyboard.series} />
-      <DecorativeElements variant={storyboard.scenes.some((s) => s.type === "payoff") ? "payoff" : "sparse"} />
+      {showChrome ? <SeriesPill series={storyboard.series} /> : null}
+      {showChrome ? (
+        <DecorativeElements variant={storyboard.scenes.some((s) => s.type === "payoff") ? "payoff" : "sparse"} />
+      ) : null}
       {timeline.map((timing) => {
         const scene = scenesById.get(timing.sceneId);
         if (!scene) return null;
@@ -60,7 +70,19 @@ export const FinanceReel: React.FC<CompositionProps> = ({
           </Sequence>
         );
       })}
-      <KineticCaptions phrases={captions} startPadding={DURATION.startPaddingSeconds} />
+      {intro.mode !== "none" && introFrames > 0 ? (
+        <Sequence durationInFrames={introFrames} name="brand-bumper">
+          <BrandBumper
+            mode={intro.mode}
+            phrase={intro.phrase}
+            durationInFrames={introFrames}
+          />
+        </Sequence>
+      ) : null}
+      <KineticCaptions
+        phrases={captions}
+        startPadding={introSeconds > 0 ? 0 : DURATION.startPaddingSeconds}
+      />
       {audioSrc ? <Audio src={audioSrc} /> : null}
     </AbsoluteFill>
   );

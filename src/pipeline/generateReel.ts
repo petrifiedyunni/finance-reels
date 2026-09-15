@@ -2,6 +2,7 @@ import path from "node:path";
 import {
   DURATION,
   GENERATION,
+  INTRO,
   RENDERER_VERSION,
   SCHEMA_VERSION,
   VIDEO,
@@ -13,13 +14,16 @@ import {
   isMockAi,
   isOfflineText,
   resolveVoiceProviderId,
+  type IntroMode,
   type VoicePresetId,
 } from "../config";
 import { parseStoryboard, type SocialMetadata, type Storyboard, type WordTimestamp } from "../content/schema";
+import { introDurationSeconds, introSpokenText, resolveIntro, shouldPlayIntroSting, shouldPlayIntroVoice } from "../content/intro";
 import { SERIES, type SeriesId, type TemplateId } from "../content/series";
 import { generateStoryboard } from "../ai/generateStoryboard";
 import { heuristicFlags, reviewFinance } from "../ai/reviewFinance";
 import { generateVoiceover } from "../audio/generateVoiceover";
+import { buildSoundtrack } from "../audio/buildSoundtrack";
 import { getAudioDuration, videoDurationFromAudio } from "../audio/getAudioDuration";
 import { transcribeForTimestamps, proportionalFallbackWords } from "../audio/transcribeForTimestamps";
 import {
@@ -32,12 +36,13 @@ import {
 } from "../audio/voiceSettings";
 import { buildSceneTimeline } from "../timing/buildSceneTimeline";
 import { groupCaptions } from "../timing/groupCaptions";
-import { ensureDir, fileExists, readJson, resolveFromRoot, writeJson } from "../utils/fs";
+import { ensureDir, fileExists, readJson, resolveFromRoot, writeJson, writeText } from "../utils/fs";
 import { Logger } from "../utils/logger";
 import { captionsCacheKey, fileHash, shouldReuse, ttsCacheKey } from "./cache";
 import { renderReel } from "./renderReel";
 import { countWords } from "../utils/words";
 import { metadataDisclaimer } from "../content/disclaimer";
+import { publishReelToTikTok, tiktokCaptionFromSocial, type TikTokPublishMode } from "../publish/tiktok/publishReel";
 
 export interface CliOptions {
   idea?: string;
@@ -45,6 +50,7 @@ export interface CliOptions {
   template?: TemplateId;
   voice?: string;
   preset?: VoicePresetId;
+  intro?: IntroMode;
   dryRun?: boolean;
   skipAi?: boolean;
   spec?: string;
@@ -52,6 +58,7 @@ export interface CliOptions {
   open?: boolean;
   verbose?: boolean;
   force?: boolean;
+  publish?: TikTokPublishMode;
 }
 
 export interface GenerationLog {
@@ -63,6 +70,7 @@ export interface GenerationLog {
   ttsModel?: string;
   transcribeModel?: string;
   voice?: VoiceSettingsSnapshot;
+  intro?: import("../content/intro").Intro;
   retries: {
     storyboard: number;
     financeReview: number;
@@ -173,6 +181,7 @@ export async function generateReel(options: CliOptions): Promise<{
 
   if (options.series) storyboard.series = options.series;
   if (options.template) storyboard.template = options.template;
+  storyboard.intro = resolveIntro(storyboard.intro, options.intro);
   storyboard = validateTemplate(storyboard);
   storyboard.schemaVersion = SCHEMA_VERSION;
   if (!storyboard.financeReview) {
@@ -205,6 +214,7 @@ export async function generateReel(options: CliOptions): Promise<{
       voiceover: storyboard.voiceover,
       words: countWords(storyboard.voiceover),
       template: storyboard.template,
+      intro: storyboard.intro,
       scenes: storyboard.scenes.map((s) => ({ id: s.id, headline: s.headline, visual: s.visual.type })),
     }, null, 2));
     generationLog.endedAt = new Date().toISOString();
@@ -367,30 +377,86 @@ export async function generateReel(options: CliOptions): Promise<{
     await writeJson(captionsPath, words);
   }
 
-  const durationSeconds = videoDurationFromAudio(audioDuration, {
-    start: DURATION.startPaddingSeconds,
+  const captions = groupCaptions(words);
+  const intro = resolveIntro(storyboard.intro, options.intro);
+  storyboard.intro = intro;
+  const introSeconds = introDurationSeconds(intro);
+  const overlap = introSeconds > 0 ? INTRO.overlapSeconds : 0;
+  const startPad = introSeconds > 0 ? 0 : DURATION.startPaddingSeconds;
+  const contentDuration = videoDurationFromAudio(audioDuration, {
+    start: startPad,
     end: DURATION.endPaddingSeconds,
   });
   const timeline = buildSceneTimeline({
     scenes: storyboard.scenes,
     words,
-    totalSeconds: durationSeconds,
+    totalSeconds: contentDuration,
+  }).map((timing) => ({
+    ...timing,
+    startSeconds: timing.startSeconds + Math.max(0, introSeconds - overlap),
+    endSeconds: timing.endSeconds + Math.max(0, introSeconds - overlap),
+  }));
+  const captionsShifted = captions.map((phrase) => ({
+    ...phrase,
+    start: phrase.start + introSeconds,
+    end: phrase.end + introSeconds,
+    words: phrase.words.map((word) => ({
+      ...word,
+      start: word.start + introSeconds,
+      end: word.end + introSeconds,
+    })),
+  }));
+  const durationSeconds = introSeconds + contentDuration - overlap;
+  log.ok(`Timeline built — ${durationSeconds.toFixed(1)}s${introSeconds ? ` (intro ${intro.mode} ${introSeconds.toFixed(1)}s)` : ""}`);
+
+  const stingPath = resolveFromRoot("public/assets/audio/intro-sting.mp3");
+  const introVoicePath = path.join(outputDir, "intro-voice.mp3");
+  const soundtrackPath = path.join(outputDir, "soundtrack.mp3");
+
+  if (introSeconds > 0 && shouldPlayIntroVoice(intro)) {
+    const spoken = introSpokenText(intro);
+    if (!(await shouldReuse(introVoicePath, Boolean(options.force))) || options.force) {
+      try {
+        await generateVoiceover({
+          text: spoken,
+          voice: options.voice,
+          outputPath: introVoicePath,
+          preset: "playful",
+        });
+        log.ok("Intro voice line generated");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        generationLog.warnings.push(`Intro voice skipped: ${message}`);
+        log.warn("Intro voice line skipped — bumper will play visually");
+      }
+    }
+  }
+
+  await buildSoundtrack({
+    introSeconds,
+    narrationPath: voicePath,
+    outputPath: soundtrackPath,
+    introVoicePath: introSeconds > 0 && shouldPlayIntroVoice(intro) ? introVoicePath : undefined,
+    stingPath: introSeconds > 0 && shouldPlayIntroSting(intro) && (await fileExists(stingPath)) ? stingPath : undefined,
   });
-  const captions = groupCaptions(words);
-  log.ok(`Timeline built — ${durationSeconds.toFixed(1)}s`);
 
   const audioSrc = "";
   const props = {
     storyboard,
     timeline,
-    captions,
+    captions: captionsShifted,
     audioSrc,
     durationInFrames: Math.max(1, Math.round(durationSeconds * VIDEO.fps)),
   };
 
   const videoPath = path.join(outputDir, "render.mp4");
   try {
-    const rendered = await renderReel({ props, outputPath: videoPath, audioPath: voicePath });
+    const rendered = await renderReel({
+      props,
+      outputPath: videoPath,
+      audioPath: soundtrackPath,
+      audioDelaySeconds: introSeconds > 0 ? 0 : DURATION.startPaddingSeconds,
+    });
     generationLog.renderDuration = rendered.durationSeconds;
     log.ok("Video rendered");
   } catch (error) {
@@ -413,11 +479,26 @@ export async function generateReel(options: CliOptions): Promise<{
     disclaimer: metadataDisclaimer,
   };
   await writeJson(path.join(outputDir, "social.json"), social);
+  await writeText(path.join(outputDir, "tiktok-caption.txt"), `${tiktokCaptionFromSocial(social)}\n`);
 
   generationLog.endedAt = new Date().toISOString();
   generationLog.template = storyboard.template;
+  generationLog.intro = intro;
   await writeJson(path.join(outputDir, "generation-log.json"), generationLog);
   log.done(videoPath);
+
+  if (options.publish) {
+    log.info(`Uploading to TikTok (${options.publish})…`);
+    const posted = await publishReelToTikTok({
+      outputDir,
+      mode: options.publish,
+    });
+    if (posted.mode === "inbox") {
+      log.ok("Sent to TikTok inbox — finish the draft in the app");
+    } else {
+      log.ok(`TikTok ${posted.status}`);
+    }
+  }
 
   if (options.open) {
     await maybeOpen(videoPath);

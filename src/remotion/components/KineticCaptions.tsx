@@ -9,10 +9,11 @@ import { VIDEO } from "../../config";
 export const KineticCaptions: React.FC<{
   phrases: CaptionPhrase[];
   startPadding?: number;
-}> = ({ phrases, startPadding = 0 }) => {
+  introOffsetSeconds?: number;
+}> = ({ phrases, startPadding = 0, introOffsetSeconds = 0 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const now = frame / fps - startPadding;
+  const now = frame / fps - startPadding - introOffsetSeconds;
 
   const active = phrases.find((p) => now >= p.start - 0.04 && now <= p.end + 0.12);
   if (!active) return null;

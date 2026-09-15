@@ -72,6 +72,14 @@
   "caption": "Selling a put sounds bearish because... put. The trade itself is usually bullish.",
   "hashtags": ["options", "finance", "investing", "financialliteracy"],
   "background": "cream",
+  "intro": {
+    "mode": "micro",
+    "enabled": true,
+    "phrase": "diva finance timeee",
+    "character": "creator_doll",
+    "introVoiceLineEnabled": true,
+    "audioMode": "spoken_and_sting"
+  },
   "financeReview": {
     "passed": true,
     "warnings": [],
