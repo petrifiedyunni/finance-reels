@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "id": "2026-09-15-implied-volatility",
+  "idea": "what is implied volatility",
+  "title": "What is implied volatility",
+  "series": "explain_like_im_five",
+  "template": "cause-effect",
+  "durationTargetSeconds": 12,
+  "hook": "IV is just the market's fear price tag.",
+  "voiceover": "Okay, implied volatility is just the market's fear price tag. When people get scared, that fear gets baked into option prices. Higher fear, higher IV, pricier options.",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "type": "hook",
+      "headline": "WHAT IS\nIMPLIED VOL?",
+      "visual": {
+        "type": "question_bubble",
+        "state": "default"
+      },
+      "emphasis": ["IMPLIED", "VOL"],
+      "narrationAnchorStart": "Implied volatility",
+      "narrationAnchorEnd": "implied volatility"
+    },
+    {
+      "id": "scene-2",
+      "type": "concept",
+      "headline": "IT'S THE MARKET'S\nFEAR PRICE TAG",
+      "visual": {
+        "type": "fear_meter",
+        "state": "high"
+      },
+      "emphasis": ["FEAR"],
+      "narrationAnchorStart": "market pricing in bigger moves",
+      "narrationAnchorEnd": "bigger moves"
+    },
+    {
+      "id": "scene-3",
+      "type": "cause_effect",
+      "headline": "FEAR → IV →\nPRICIER OPTIONS",
+      "visual": {
+        "type": "iv_meter",
+        "state": "high"
+      },
+      "emphasis": ["FEAR", "IV", "OPTIONS"],
+      "narrationAnchorStart": "people get scared",
+      "narrationAnchorEnd": "pricier options",
+      "causeEffect": [
+        { "label": "FEAR", "visual": { "type": "fear_meter", "state": "high" } },
+        { "label": "IV UP", "visual": { "type": "iv_meter", "state": "high" } },
+        { "label": "PRICEY", "visual": { "type": "option_contract", "state": "default", "label": "CALL" } }
+      ]
+    }
+  ],
+  "caption": "IV is not a villain. It's the market charging more when it expects bigger moves.",
+  "hashtags": ["options", "finance", "investing", "financialliteracy"],
+  "background": "butter",
+  "financeReview": {
+    "passed": true,
+    "warnings": [],
+    "reviewedAt": "2026-09-15T00:00:00.000Z"
+  }
+}

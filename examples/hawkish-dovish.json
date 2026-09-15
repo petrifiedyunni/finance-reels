@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0",
+  "id": "2026-09-15-hawkish-dovish",
+  "idea": "hawkish vs dovish",
+  "title": "Hawkish vs dovish",
+  "series": "wall_street_vocabulary",
+  "template": "before-after",
+  "durationTargetSeconds": 12,
+  "hook": "'Hawkish' sounds complicated. It isn't.",
+  "voiceover": "'Hawkish' sounds complicated. It isn't. Hawkish means more worried about inflation, so tighter policy. Dovish? More worried about growth, so easier money. Same Fed. Different fear.",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "type": "hook",
+      "headline": "HAWKISH SOUNDS\nCOMPLICATED.\nIT ISN'T.",
+      "visual": {
+        "type": "speech_bubble",
+        "state": "default",
+        "label": "hawkish??"
+      },
+      "emphasis": ["HAWKISH"],
+      "narrationAnchorStart": "Hawkish means",
+      "narrationAnchorEnd": "Hawkish means"
+    },
+    {
+      "id": "scene-2",
+      "type": "comparison",
+      "headline": "HAWKISH VS DOVISH",
+      "visual": {
+        "type": "inflation_tag",
+        "state": "up"
+      },
+      "secondaryVisual": {
+        "type": "rate_arrow",
+        "state": "down",
+        "direction": "down"
+      },
+      "emphasis": ["HAWKISH", "DOVISH"],
+      "narrationAnchorStart": "worried about inflation",
+      "narrationAnchorEnd": "easier money",
+      "comparison": {
+        "left": "HAWKISH",
+        "right": "DOVISH",
+        "leftVisual": { "type": "inflation_tag", "state": "up" },
+        "rightVisual": { "type": "rate_arrow", "state": "down", "direction": "down" }
+      }
+    },
+    {
+      "id": "scene-3",
+      "type": "takeaway",
+      "headline": "SAME FED.\nDIFFERENT FEAR.",
+      "visual": {
+        "type": "balance_scale",
+        "state": "default"
+      },
+      "emphasis": ["FEAR"],
+      "narrationAnchorStart": "Same Fed",
+      "narrationAnchorEnd": "Different fear"
+    }
+  ],
+  "caption": "Hawkish vs dovish is just which problem the Fed is more scared of: inflation or growth.",
+  "hashtags": ["fed", "finance", "investing", "financialliteracy"],
+  "background": "lavender",
+  "financeReview": {
+    "passed": true,
+    "warnings": [],
+    "reviewedAt": "2026-09-15T00:00:00.000Z"
+  }
+}

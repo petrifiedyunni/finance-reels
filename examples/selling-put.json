@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0",
+  "id": "2026-09-15-selling-put-bullish",
+  "idea": "why is selling a put bullish",
+  "title": "Why selling a put is bullish",
+  "series": "options_101",
+  "template": "price-line",
+  "durationTargetSeconds": 12,
+  "hook": "Wait... selling a PUT is bullish?",
+  "voiceover": "Okay, selling a put sounds bearish. But here's the weird part — you're actually hoping the stock stays above your strike. If it does? It expires worthless. You keep the premium.",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "type": "hook",
+      "headline": "SELLING A PUT\nIS BULLISH?",
+      "subtext": null,
+      "visual": {
+        "type": "option_contract",
+        "state": "question",
+        "label": "PUT",
+        "value": "$100",
+        "secondaryValue": "$2.40"
+      },
+      "emphasis": ["PUT", "BULLISH"],
+      "narrationAnchorStart": "selling a put sounds bearish",
+      "narrationAnchorEnd": "sounds bearish"
+    },
+    {
+      "id": "scene-2",
+      "type": "concept",
+      "headline": "YOU WANT THE STOCK\nABOVE YOUR STRIKE",
+      "subtext": null,
+      "visual": {
+        "type": "price_vs_strike",
+        "state": "above",
+        "value": 105,
+        "secondaryValue": 100
+      },
+      "emphasis": ["ABOVE"],
+      "narrationAnchorStart": "stock stays above your strike",
+      "narrationAnchorEnd": "above your strike"
+    },
+    {
+      "id": "scene-3",
+      "type": "concept",
+      "headline": "ABOVE STRIKE\nPUT CAN EXPIRE\nWORTHLESS",
+      "visual": {
+        "type": "option_contract",
+        "state": "fade",
+        "label": "PUT",
+        "value": "$100",
+        "secondaryValue": "$2.40"
+      },
+      "emphasis": ["expire", "worthless"],
+      "narrationAnchorStart": "option expires worthless",
+      "narrationAnchorEnd": "expires worthless"
+    },
+    {
+      "id": "scene-4",
+      "type": "payoff",
+      "headline": "YOU KEEP\nTHE PREMIUM",
+      "visual": {
+        "type": "coins",
+        "state": "collect",
+        "label": "premium"
+      },
+      "emphasis": ["PREMIUM"],
+      "narrationAnchorStart": "You keep the premium",
+      "narrationAnchorEnd": "keep the premium"
+    }
+  ],
+  "caption": "Selling a put sounds bearish because... put. The trade itself is usually bullish.",
+  "hashtags": ["options", "finance", "investing", "financialliteracy"],
+  "background": "cream",
+  "financeReview": {
+    "passed": true,
+    "warnings": [],
+    "reviewedAt": "2026-09-15T00:00:00.000Z"
+  }
+}

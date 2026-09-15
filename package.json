@@ -1,0 +1,50 @@
+{
+  "name": "finance-reels",
+  "version": "1.0.0",
+  "description": "Local-first studio that turns one finance idea into a polished 9:16 explainer reel.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "reel": "tsx src/cli/index.ts",
+    "voice-test": "tsx src/cli/voiceTest.ts",
+    "studio": "remotion studio src/remotion/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@fontsource/fraunces": "^5.2.8",
+    "@fontsource/outfit": "^5.2.8",
+    "@remotion/bundler": "4.0.520",
+    "@remotion/cli": "4.0.520",
+    "@remotion/layout-utils": "4.0.520",
+    "@remotion/media-utils": "4.0.520",
+    "@remotion/renderer": "4.0.520",
+    "@remotion/zod-types": "4.0.520",
+    "dotenv": "^17.2.2",
+    "openai": "^5.23.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.520",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config": "4.0.520",
+    "@remotion/eslint-plugin": "^4.0.520",
+    "@types/node": "^24.5.2",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "8.57.1",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

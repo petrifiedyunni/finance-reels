@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0",
+  "id": "2026-09-15-percent-loss-recovery",
+  "idea": "why a 10% loss needs more than a 10% gain to recover",
+  "title": "Why 10% down isn't fixed by 10% up",
+  "series": "money_math",
+  "template": "before-after",
+  "durationTargetSeconds": 13,
+  "hook": "This is why +10% doesn't fix a -10% loss.",
+  "voiceover": "Here's the rude part. Start with a hundred. Lose ten percent, you're at ninety. Gain ten percent of ninety... that's ninety-nine. You still need more than ten percent to get back.",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "type": "hook",
+      "headline": "+10% DOESN'T FIX\nA -10% LOSS",
+      "visual": {
+        "type": "percent_change",
+        "state": "down",
+        "value": "-10%",
+        "direction": "down"
+      },
+      "emphasis": ["10%"],
+      "narrationAnchorStart": "Start with a hundred",
+      "narrationAnchorEnd": "one hundred"
+    },
+    {
+      "id": "scene-2",
+      "type": "comparison",
+      "headline": "$100 → $90\n$90 → $99",
+      "visual": {
+        "type": "calculator",
+        "state": "default",
+        "value": "90"
+      },
+      "emphasis": ["$90", "$99"],
+      "narrationAnchorStart": "Lose ten percent",
+      "narrationAnchorEnd": "ninety-nine",
+      "comparison": {
+        "left": "-10%",
+        "right": "+10%",
+        "leftVisual": { "type": "percent_change", "state": "down", "value": "$90", "direction": "down" },
+        "rightVisual": { "type": "percent_change", "state": "up", "value": "$99", "direction": "up" }
+      }
+    },
+    {
+      "id": "scene-3",
+      "type": "takeaway",
+      "headline": "YOU STILL NEED\nMORE THAN 10%",
+      "visual": {
+        "type": "balance_scale",
+        "state": "left"
+      },
+      "emphasis": ["MORE"],
+      "narrationAnchorStart": "more than ten percent",
+      "narrationAnchorEnd": "to get back"
+    }
+  ],
+  "caption": "A 10% loss is not undone by a 10% gain. Math is rude like that.",
+  "hashtags": ["investing", "finance", "moneymath", "financialliteracy"],
+  "background": "cream",
+  "financeReview": {
+    "passed": true,
+    "warnings": [],
+    "reviewedAt": "2026-09-15T00:00:00.000Z"
+  }
+}
